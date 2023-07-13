@@ -1,30 +1,38 @@
-// const person: {
-//     name: string;
-//     age: number;
-// } = {
+// Union types example. Use | to be more flexible with the types. Below find the string and number
 
-// const ADMIN = 0;
-// const READ_ONLY = 1;
-// const Author = 2;
-
-enum Role {ADMIN, READ_ONLY, AUTHOR}; 
-const person = {
-    name: 'Mohit',
-    age: 20,
-    hobbies: ['Sports', 'Cooking'],
-    role: Role.ADMIN
-};
-
-let favouriteActivities: string[];
-favouriteActivities = ['sports']
-
-console.log(person.age);
-
-for (const hobby of person.hobbies) {
-    console.log(hobby.toUpperCase());
+function combine(
+  input1: number | string, // Use of union type to provide with either string or number
+  input2: number | string,
+  // Literal type: As the name suggest it is specific strings or numbers in type
+  resultConversion: "as-number" | "as-text"
+  /* Use of Literal type here. 
+    'resultConversion' is expecting not all string
+    But "as-number" & "as-text" specific string
+  */
+) {
+  let result;
+  if (
+    (typeof input1 == "number" && typeof input2 == "number") ||
+    resultConversion === "as-number"
+  ) {
+    result = +input1 + +input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+  return result;
+  //   if (resultConversion === "as-number") {
+  //     // return parseFloat(result);
+  //     return +result;
+  //   } else {
+  //     return result.toString();
+  //   }
 }
 
-if (person.role === Role.ADMIN) {
-    console.log('You are admin');
+const combinedAges = combine(30, 26, "as-number");
 
-}
+console.log(combinedAges);
+const combinedStringAges = combine("30", "20", "as-number");
+console.log(combinedStringAges);
+
+const combinedNames = combine("Max", "Anna", "as-text");
+console.log(combinedNames);
