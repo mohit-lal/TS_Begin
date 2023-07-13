@@ -1,38 +1,19 @@
-// Union types example. Use | to be more flexible with the types. Below find the string and number
-
-function combine(
-  input1: number | string, // Use of union type to provide with either string or number
-  input2: number | string,
-  // Literal type: As the name suggest it is specific strings or numbers in type
-  resultConversion: "as-number" | "as-text"
-  /* Use of Literal type here. 
-    'resultConversion' is expecting not all string
-    But "as-number" & "as-text" specific string
-  */
-) {
-  let result;
-  if (
-    (typeof input1 == "number" && typeof input2 == "number") ||
-    resultConversion === "as-number"
-  ) {
-    result = +input1 + +input2;
-  } else {
-    result = input1.toString() + input2.toString();
-  }
-  return result;
-  //   if (resultConversion === "as-number") {
-  //     // return parseFloat(result);
-  //     return +result;
-  //   } else {
-  //     return result.toString();
-  //   }
+function add(n1: number, n2: number): number {
+    return n1 + n2;
 }
 
-const combinedAges = combine(30, 26, "as-number");
+function printResult(num: number): void {
+    console.log("Result: " + num);
+}
+ 
+printResult(add(5,12));
+// In JS if we return a value from a function which doesn't return any thing we get an undefined value
+console.log(printResult(add(5,12))); 
 
-console.log(combinedAges);
-const combinedStringAges = combine("30", "20", "as-number");
-console.log(combinedStringAges);
+let combineValues: (a: number, b: number) => number; // () tells that combineValues takes only function and => number will tell that it will return a number
 
-const combinedNames = combine("Max", "Anna", "as-text");
-console.log(combinedNames);
+combineValues = add;
+// combineValues = printResult;
+
+console.log(combineValues(8,8));
+// let someVal: undefined; undefined is a type in TS
