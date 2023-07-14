@@ -38,7 +38,17 @@ Unknown types are similar to Any but with some restrictions. We use unknown for 
         userInput = "Max";
         userName = userInput; // This will give error as Unknown cannot be assigned to string type.
 
-        
+# Never Types:
+Some functions never returns any value. Specially used to throw exception or message.
+
+        function generateError(message: string, code: number): never {
+        // This never returns anything
+        throw { message: message, errorCode: code };
+        }
+
+generateError("An error occured", 500);
+
+generateError("An error occured", 500);
 
 # Function Types:
 Function types allows us to declare which type of function we want to use specifically
