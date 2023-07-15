@@ -76,3 +76,7 @@ When type checking, take into account 'null' and 'undefined'.
 
 # strictFunctionTypes
 When assigning functions, check to ensure parameters and the return values are subtype-compatible.
+
+# strictBindCallApply
+        "strictBindCallApply": true,                      
+Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. 
