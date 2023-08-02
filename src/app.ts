@@ -1,90 +1,114 @@
 class Department {
-    // Property
-    // name: string;
-    // id: number;
+  // Property
+  // name: string;
+  // id: number;
 
-    // Private property is only access from inside of the class. 
-    //It cannot be modified from child class
-    // private employees: string[] = [];
+  // Private property is only access from inside of the class.
+  //It cannot be modified from child class
+  // private employees: string[] = [];
 
-    // Protected property can be accessed from child classes as well 
-    protected employees: string[] = [];
-    
-    // Constructor method
-    constructor(private readonly id: string, public name: string) {
-        // this.name = name;
-        // this.id = id
-    }
+  // Protected property can be accessed from child classes as well
+  protected employees: string[] = [];
 
-    // Method
-    describe (this: Department) {  // Here the input param is an instance of class
-        console.log("Department: " + this.name +  "  : " + this.id);
-        // console.log('Department (${this.id}): (${this.name})');
-    }
+  // Constructor method
+  constructor(private readonly id: string, public name: string) {
+    // this.name = name;
+    // this.id = id
+  }
 
-    addEmployee(employee: string) {
-        this.employees.push(employee);
-    }
+  // Method
+  describe(this: Department) {
+    // Here the input param is an instance of class
+    console.log("Department: " + this.name + "  : " + this.id);
+    // console.log('Department (${this.id}): (${this.name})');
+  }
 
-    printEmployeeInformation() {
-        console.log(this.employees.length);
-        console.log(this.employees);
-    }
+  addEmployee(employee: string) {
+    this.employees.push(employee);
+  }
+
+  printEmployeeInformation() {
+    console.log(this.employees.length);
+    console.log(this.employees);
+  }
 }
 
 class ITDepartment extends Department {
-    admins: string[];
-    constructor(id: string, admins: string[]) {
-        // Whenever we need to access the constructor of parent class we should use super
-        // Also super should be used as a function and passed in params as in constructor of parents
-        // super() should be used before this
-        super(id, "IT"); 
-        this.admins = admins;
-
-    }
+  admins: string[];
+  constructor(id: string, admins: string[]) {
+    /* Whenever we need to access the constructor of parent class we should use 
+    super. Also super should be used as a function and passed in params as in 
+    constructor of parents. super() should be used before this */
+    super(id, "IT");
+    this.admins = admins;
+  }
 }
 
 class AccountingDepartment extends Department {
+    private lastReport: string;
+
     constructor(id: string, private reports: string[]) {
-        super(id, "Accounting");
+      super(id, "Accounting");
+      this.lastReport = reports[0];
     }
 
-    addEmployee(name: string) {
-        if (name !== "") {
-            
-            // Here since employees is a protected property we can use it in child class
-            this.employees.push(name);
+    // getter method
+    get mostRecentReport() {
+        if (this.lastReport) {
+            return this.lastReport;
         }
+        throw new Error("Sorry, no report found.");
+        
     }
+    
+    // setter method
+    set mostRecentReport(value: string) {
+        if (!value) {
+            throw new Error("Pass in a VALUE.");
+        }
+        this.addReports(value);
+    }
+  addEmployee(name: string) {
+    if (name !== "") {
+      // Here since employees is a protected property we can use it in child class
+      this.employees.push(name);
+    }
+  }
 
-    addReports(text:string) {
-        this.reports.push(text);
-    }
+  addReports(text: string) {
+    this.reports.push(text);
+    this.lastReport = text;
+  }
 
-    printReports() {
-        console.log(this.reports);
-    }
+  printReports() {
+    console.log(this.reports);
+  }
 }
 
-const accounting = new AccountingDepartment('d2', []);
+const accounting = new AccountingDepartment("d2", []);
+
+// Putting = will trigger the setter method
+accounting.mostRecentReport = 'Year end reports';
 accounting.addReports("Adding reports");
-
+console.log(accounting.mostRecentReport);
 accounting.printReports();
+
+// accounting.printReports();
 accounting.addEmployee("Mohit");
-accounting.printEmployeeInformation();
+// accounting.printEmployeeInformation();
 
-const it = new ITDepartment('d1', ['Max']);
+// const it = new ITDepartment("d1", ["Max"]);
 
-it.addEmployee("Max");
-it.addEmployee("Manu");
+// it.addEmployee("Max");
+// it.addEmployee("Manu");
 
-// Trying to access a private property results in error
-// it.employees[2] = "Anna"; 
+// // Trying to access a private property results in error
+// // it.employees[2] = "Anna";
 
-it.describe();
-it.name = 'New Name';
-it.printEmployeeInformation();
-console.log(it);
+// it.describe();
+// it.name = "New Name";
+// it.printEmployeeInformation();
+// console.log(it);
 
 // The code below won't show any error but will give as undefined
 // Here we are getting undefined because we dont get the name property with this.name
@@ -95,4 +119,3 @@ console.log(it);
 as we have name property */
 // const accountingCopy = {name: "Dummy", describe: accounting.describe};
 // accountingCopy.describe();
-
