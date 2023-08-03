@@ -1,4 +1,4 @@
-class Department {
+abstract class Department {
   // Property
   // name: string;
   // id: number;
@@ -10,17 +10,31 @@ class Department {
   // Protected property can be accessed from child classes as well
   protected employees: string[] = [];
 
+  // Static property
+  static fiscalYear = "2023";
+
   // Constructor method
-  constructor(private readonly id: string, public name: string) {
+  constructor(protected readonly id: string, public name: string) {
     // this.name = name;
     // this.id = id
+    /*  We cannot access static property and static method by the instance of a class
+    i.e is we cannot use this keyword */
+    // console.log(this.fiscalYear);
+    console.log(Department.fiscalYear);
   }
 
   // Method
-  describe(this: Department) {
+  abstract describe(this: Department): void; 
+  //{
+
+    // Instead we can use the class name itself
     // Here the input param is an instance of class
-    console.log("Department: " + this.name + "  : " + this.id);
-    // console.log('Department (${this.id}): (${this.name})');
+//     console.log("Department: " + this.name + "  : " + this.id);
+//     // console.log('Department (${this.id}): (${this.name})');
+//   }
+
+  static createEmployee(name: string) {
+    return { name: name };
   }
 
   addEmployee(employee: string) {
@@ -42,32 +56,38 @@ class ITDepartment extends Department {
     super(id, "IT");
     this.admins = admins;
   }
+
+  describe() {
+      console.log("IT department" + this.id);
+  }
 }
 
 class AccountingDepartment extends Department {
-    private lastReport: string;
+  private lastReport: string;
 
-    constructor(id: string, private reports: string[]) {
-      super(id, "Accounting");
-      this.lastReport = reports[0];
-    }
+  constructor(id: string, private reports: string[]) {
+    super(id, "Accounting");
+    this.lastReport = reports[0];
+  }
 
-    // getter method
-    get mostRecentReport() {
-        if (this.lastReport) {
-            return this.lastReport;
-        }
-        throw new Error("Sorry, no report found.");
-        
+  // getter method
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
     }
-    
-    // setter method
-    set mostRecentReport(value: string) {
-        if (!value) {
-            throw new Error("Pass in a VALUE.");
-        }
-        this.addReports(value);
+    throw new Error("Sorry, no report found.");
+  }
+
+  // setter method
+  set mostRecentReport(value: string) {
+    if (!value) {
+      throw new Error("Pass in a VALUE.");
     }
+    this.addReports(value);
+  }
+
+//   abstract describe(this: Department): void;
+
   addEmployee(name: string) {
     if (name !== "") {
       // Here since employees is a protected property we can use it in child class
@@ -83,18 +103,26 @@ class AccountingDepartment extends Department {
   printReports() {
     console.log(this.reports);
   }
+
+  describe() {
+      console.log("Accounting Dpartment" + this.id);
+  }
 }
 
+const employee1 = Department.createEmployee("Ballon");
+console.log(employee1, Department.fiscalYear);
 const accounting = new AccountingDepartment("d2", []);
 
 // Putting = will trigger the setter method
-accounting.mostRecentReport = 'Year end reports';
+accounting.mostRecentReport = "Year end reports";
 accounting.addReports("Adding reports");
 console.log(accounting.mostRecentReport);
-accounting.printReports();
+accounting.describe();
+// accounting.printReports();
 
 // accounting.printReports();
 accounting.addEmployee("Mohit");
+// console.log(AccountingDepartment.createEmployee("Del"));
 // accounting.printEmployeeInformation();
 
 // const it = new ITDepartment("d1", ["Max"]);

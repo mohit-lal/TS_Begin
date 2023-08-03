@@ -14,12 +14,19 @@ class Department {
         this.employees = [];
         // this.name = name;
         // this.id = id
+        /*  We cannot access static property and static method by the instance of a class
+        i.e is we cannot use this keyword */
+        // console.log(this.fiscalYear);
+        console.log(Department.fiscalYear);
     }
-    // Method
-    describe() {
-        // Here the input param is an instance of class
-        console.log("Department: " + this.name + "  : " + this.id);
-        // console.log('Department (${this.id}): (${this.name})');
+    //{
+    // Instead we can use the class name itself
+    // Here the input param is an instance of class
+    //     console.log("Department: " + this.name + "  : " + this.id);
+    //     // console.log('Department (${this.id}): (${this.name})');
+    //   }
+    static createEmployee(name) {
+        return { name: name };
     }
     addEmployee(employee) {
         this.employees.push(employee);
@@ -29,6 +36,8 @@ class Department {
         console.log(this.employees);
     }
 }
+// Static property
+Department.fiscalYear = "2023";
 class ITDepartment extends Department {
     constructor(id, admins) {
         /* Whenever we need to access the constructor of parent class we should use
@@ -36,6 +45,9 @@ class ITDepartment extends Department {
         constructor of parents. super() should be used before this */
         super(id, "IT");
         this.admins = admins;
+    }
+    describe() {
+        console.log("IT department" + this.id);
     }
 }
 class AccountingDepartment extends Department {
@@ -58,6 +70,7 @@ class AccountingDepartment extends Department {
         }
         this.addReports(value);
     }
+    //   abstract describe(this: Department): void;
     addEmployee(name) {
         if (name !== "") {
             // Here since employees is a protected property we can use it in child class
@@ -71,15 +84,22 @@ class AccountingDepartment extends Department {
     printReports() {
         console.log(this.reports);
     }
+    describe() {
+        console.log("Accounting Dpartment" + this.id);
+    }
 }
+const employee1 = Department.createEmployee("Ballon");
+console.log(employee1, Department.fiscalYear);
 const accounting = new AccountingDepartment("d2", []);
 // Putting = will trigger the setter method
-accounting.mostRecentReport = 'Year end reports';
+accounting.mostRecentReport = "Year end reports";
 accounting.addReports("Adding reports");
 console.log(accounting.mostRecentReport);
-accounting.printReports();
+accounting.describe();
+// accounting.printReports();
 // accounting.printReports();
 accounting.addEmployee("Mohit");
+// console.log(AccountingDepartment.createEmployee("Del"));
 // accounting.printEmployeeInformation();
 // const it = new ITDepartment("d1", ["Max"]);
 // it.addEmployee("Max");
