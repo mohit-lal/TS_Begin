@@ -6,14 +6,22 @@
 // we should define properties and methods as that of interface
 class Person {
     constructor(n) {
+        this.outputName = '...';
         this.age = 30;
-        this.name = n;
+        if (n) {
+            this.name = n;
+        }
     }
     greet(phrase) {
-        console.log(phrase + ' ' + this.name + ". My age is " + this.age);
+        if (this.name) {
+            console.log(phrase + ' ' + this.name + ". My age is " + this.age);
+        }
+        else {
+            console.log('Hi!');
+        }
     }
 }
 let user1; // using interface as a type
-user1 = new Person("Max");
+user1 = new Person();
 user1.greet("Hi I am ");
 console.log(user1);

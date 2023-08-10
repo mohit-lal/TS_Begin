@@ -17,7 +17,8 @@
 
 // user1.greet("Hi there I am ");
 interface Named {
-  readonly name: string;
+  readonly name?: string;
+  outputName?: string;
 }
 
 
@@ -30,19 +31,28 @@ interface Greetable extends Named{
 // while implementing interface we must adhere to interface structure
 // we should define properties and methods as that of interface
 class Person implements Greetable{ // implementing interface in a class
-  name: string;
+  name?: string;
+  outputName = '...'
   age = 30;
 
-  constructor (n: string) {
-    this.name = n;
+  constructor (n?: string) {
+
+    if (n) {
+      this.name = n;
+    }
   }
 
   greet(phrase:string) {
-    console.log(phrase + ' ' + this.name + ". My age is " + this.age);
+    if (this.name) {
+      
+      console.log(phrase + ' ' + this.name + ". My age is " + this.age);
+    } else {
+      console.log('Hi!')
+    }
   }
 }
 
 let user1: Greetable; // using interface as a type
-user1 = new Person("Max");
+user1 = new Person();
 user1.greet("Hi I am ");
 console.log(user1);
